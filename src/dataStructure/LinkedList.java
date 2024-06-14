@@ -90,10 +90,94 @@ public class LinkedList {
         return temp;
     }
 
+
+    public void prepend(String data){
+        Node newNode = new Node(data);
+        if(length == 0){
+            head = newNode;
+            tail = newNode;
+        }else{
+            newNode.next = head;
+            head = newNode;
+        }
+
+        length ++;
+    }
+
+    public Node removerFirst(){
+        if(length == 0 ) return null;
+        Node temp = head;
+        head = head.next;
+        temp.next = null;
+        length --;
+
+        if(length == 0){
+            head= null;
+            tail = null;
+        }
+        return temp;
+    }
+
+    public Node get(int index){
+        if(index <0 || index >= length) return null;
+        Node temp = head;
+        for (int i = 0; i <index ; i++) {
+            temp = temp.next;
+        }
+
+        return temp;
+    }
+
+    public boolean insert(int index, String data){
+        if(index < 0 || index > length) return false;
+        if (index == 0 ){
+            prepend(data);
+            return true;
+        }
+        if (index == length){
+            append(data);
+            return true;
+        }
+        Node newNode = new Node(data);
+        Node temp = get(index - 1 );
+        newNode.next = temp.next;
+        temp.next = newNode;
+        length ++;
+
+        return true;
+    }
+
+    public boolean set (int index, String data){
+        Node temp = get(index);
+        if(temp != null){
+            temp.data = data;
+            return true;
+        }
+        return false;
+    }
+
+    public Node remove(int index){
+        if(index <0 || index >= length) return null;
+        if (index == 0) return removerFirst();
+        if (index == length -1) return removeLast();
+
+        Node prev = get(index - 1);
+        Node temp = prev.next;
+
+        prev.next = temp.next;
+        temp.next = null;
+        length --;
+
+        return temp;
+    }
+
     public static void main(String[] args) {
         LinkedList list = new LinkedList("Elemento 1 ");
         list.append("Elemento 2 ");
         list.append("Elemento 3 ");
+        list.prepend("Elemento 0 ");
+        list.prepend("Elemento 01 ");
+        list.prepend("Elemento 02 ");
 
         list.getHead();
         list.getTail();
@@ -102,6 +186,21 @@ public class LinkedList {
 
         System.out.println("Removendo ultimo elemento");
         System.out.println(list.removeLast().data);
+        list.print();
+
+        System.out.println("Removendo Primeiro elemento");
+        System.out.println(list.removerFirst().data);
+        list.print();
+        System.out.println("Imprimindo Elemento em certa posição");
+        System.out.println(list.get(2).data);
+        list.print();
+        System.out.println("Inserindo em valor aleatorio");
+        System.out.println(list.insert(2, "Elemento Novo"));
+        list.print();
+        System.out.println("Alterando nome do item");
+        System.out.println(list.set(0, "Elemento 01 NOVO"));
+        list.print();System.out.println("Removendo index meio da tabela");
+        list.remove(3);
         list.print();
     }
 
